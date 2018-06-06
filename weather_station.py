@@ -33,7 +33,8 @@ WU_URL = "http://weatherstation.wunderground.com/weatherstation/updateweathersta
 EC2 = "http://ec2-34-210-122-38.us-west-2.compute.amazonaws.com:3000/"
 # for style
 SINGLE_HASH = "|"
-HASHES = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+SINGLE_HASH = "|"
+HASHES = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 SLASH_N = "\n"
 # LED display settings
 LOW_LIGHT_MODE = True
@@ -130,22 +131,34 @@ def toggleLLmode():
     else:
 	sense.low_light = False
 
-def pushed_up():
-    sense = SenseHat()
-    sense.show_message(str(socket.gethostbyname(socket.gethostname())))
+def joystickPress():
+    # Set the effects of pressing the joystick
+    toggleLLmode()
+    sense.set_pixel(str(LOW_LIGHT_MODE))
+    sense.clear()
 
-def pushed_down():
-    sense = SenseHat()
+def pushed_up(event):
+    sense.show_message(str(socket.gethostbyname(socket.gethostname()))
+    sense.clear()
+
+def pushed_down(event):
     sense.show_message("HIRE ME!",
-                       text_colour=[255, 255, 0])
+                       text_colour=[255, 255, 0], scroll_speed=0.5)
+    sense.clear()
+
+def pushed_left(event):
+    sense.show_message("EXECUTE ORDER 66", text_colour=b, scroll_speed=0.8)
+    sense.clear()
+
+def pushed_right(event):
+    sense.show_message("Hi Adam! (and Ryan?)", text_colour=r, scroll_speed=0.5)
+    sense.clear()
 
 # Listen for joystick key
-def joystick():
-    sense = SenseHat()
-    sense.stick.direction_up = pushed_up()
-    sense.stick.direction_down = pushed_down()
-    sense.stick.direction_left = pushed_left()
-    sense.stick.direction_right = pushed_right()
+sense.stick.direction_up = pushed_up
+sense.stick.direction_down = pushed_down
+sense.stick.direction_left = pushed_left
+sense.stick.direction_right = pushed_right
 
 def main():
     global last_temp
@@ -245,6 +258,7 @@ def main():
                             upload_url = WU_URL + "?" + urlencode(weather_data)
                             response = urllib2.urlopen(upload_url)
                             html = response.read()
+                            print ("URL" + upload_url)
                             # on succesful upload - have a visual cue!
                             print("Server response:", html)
                             response.close()  # best practice to close the file
@@ -298,8 +312,7 @@ try:
     sense.set_rotation(0)
     # then write some text to the Sense HAT's 'screen'
     # sense.show_message("Low Light: " + LOW_LIGHT_MODE, scroll_speed=0.5)
-    sense.show_message("   Party On!", text_colour=[255, 255, 0], back_colour=[0, 0, 255])
-    # sense.show_message("IP: ", str(subprocess.run("ips", stdout=subprocess.PIPE)))
+    sense.show_message("Party On!", text_colour=[255, 255, 0], back_colour=[0, 0, 255])
     # clear the screen
     sense.clear()
     # get the current temp to use when checking the previous measurement
