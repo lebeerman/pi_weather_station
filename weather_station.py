@@ -236,7 +236,7 @@ def main():
                             html = response.read()
                             # on succesful upload - have a visual cue!
                             print("Server response:", html)
-                            sense.show_message("✓ POSTED", text_colour=[
+                            sense.show_message("POSTED", text_colour=[
                                                32, 178, 170], back_colour=[0, 100, 0])
 			                sense.clear()
                             response.close()  # best practice to close the file
@@ -257,6 +257,7 @@ def main():
                             upload_url = WU_URL + "?" + urlencode(weather_data)
                             response = urllib2.urlopen(upload_url)
                             html = response.read()
+                            print ("URL" + upload_url)
                             # on succesful upload - have a visual cue!
                             print("Server response:", html)
                             response.close()  # best practice to close the file
@@ -311,6 +312,7 @@ try:
     # then write some text to the Sense HAT's 'screen'
     # sense.show_message("Low Light: " + LOW_LIGHT_MODE, scroll_speed=0.5)
     sense.show_message("Party On!", text_colour=[255, 255, 0], back_colour=[0, 0, 255])
+    #
     # clear the screen
     sense.clear()
     # get the current temp to use when checking the previous measurement
