@@ -154,13 +154,14 @@ def pushed_right(event):
     sense.show_message("Hi Adam! (and Ryan?)", text_colour=r, scroll_speed=0.5)
     sense.clear()
 
-# Listen for joystick key
-sense.stick.direction_up = pushed_up
-sense.stick.direction_down = pushed_down
-sense.stick.direction_left = pushed_left
-sense.stick.direction_right = pushed_right
-
 def main():
+
+    # Listen for joystick key
+    sense.stick.direction_up = pushed_up
+    sense.stick.direction_down = pushed_down
+    sense.stick.direction_left = pushed_left
+    sense.stick.direction_right = pushed_right
+    
     global last_temp
     # initialize the lastMinute variable to the current time to start
     # on startup, just use the previous minute as lastMinute
