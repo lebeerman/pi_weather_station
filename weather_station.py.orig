@@ -136,8 +136,7 @@ def pushed_up():
 
 def pushed_down():
     sense = SenseHat()
-    sense.show_message("HIRE ME!",
-                       text_colour=[255, 255, 0])
+    sense.show_message("HIRE ME!", text_colour=[255, 255, 0])
 
 # Listen for joystick key
 def joystick():
@@ -245,7 +244,7 @@ def main():
                             upload_url = WU_URL + "?" + urlencode(weather_data)
                             response = urllib2.urlopen(upload_url)
                             html = response.read()
-                            print ("URL" + upload_url)
+                            print ("URL: " + upload_url)
                             # on succesful upload - have a visual cue!
                             print("Server response:", html)
                             response.close()  # best practice to close the file
@@ -299,13 +298,8 @@ try:
     sense.set_rotation(0)
     # then write some text to the Sense HAT's 'screen'
     # sense.show_message("Low Light: " + LOW_LIGHT_MODE, scroll_speed=0.5)
-<<<<<<< HEAD
-    sense.show_message("   Party On!", text_colour=[255, 255, 0], back_colour=[0, 0, 255])
-    # sense.show_message("IP: ", str(subprocess.run("ips", stdout=subprocess.PIPE)))
-=======
     sense.show_message("Party On!", text_colour=[255, 255, 0], back_colour=[0, 0, 255])
-    #
->>>>>>> 29bf7ed7cb72a02a222a752facc5380101bc8116
+    # sense.show_message("IP: ", str(subprocess.run("ips", stdout=subprocess.PIPE)))
     # clear the screen
     sense.clear()
     # get the current temp to use when checking the previous measurement
