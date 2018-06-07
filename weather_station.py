@@ -127,27 +127,22 @@ def toggleLLmode():
     # Toggle the brightness on the LED display 
     LOW_LIGHT_MODE = (LOW_LIGHT_MODE != True)
     if (LOW_LIGHT_MODE):
-	sense.low_light = True
+	    sense.low_light = True
     else:
-	sense.low_light = False
-
-def joystickPress():
-    # Set the effects of pressing the joystick
-    toggleLLmode()
-    sense.set_pixel(str(LOW_LIGHT_MODE))
-    sense.clear()
+	    sense.low_light = False
 
 def pushed_up(event):
     sense.show_message(str(socket.gethostbyname(socket.gethostname())))
     sense.clear()
 
 def pushed_down(event):
-    sense.show_message("HIRE ME!",
-                       text_colour=[255, 255, 0], scroll_speed=0.5)
+    sense.show_message("HIRE ME!", text_colour=[255, 255, 0], scroll_speed=0.5)
     sense.clear()
 
 def pushed_left(event):
-    sense.show_message("EXECUTE ORDER 66", text_colour=b, scroll_speed=0.8)
+    # Set the effects of pressing the joystick
+    toggleLLmode()
+    sense.set_pixel(str(LOW LIGHT MODE))
     sense.clear()
 
 def pushed_right(event):
@@ -156,12 +151,7 @@ def pushed_right(event):
 
 def main():
 
-    # Listen for joystick key
-    sense.stick.direction_up = pushed_up
-    sense.stick.direction_down = pushed_down
-    sense.stick.direction_left = pushed_left
-    sense.stick.direction_right = pushed_right
-    
+
     global last_temp
     # initialize the lastMinute variable to the current time to start
     # on startup, just use the previous minute as lastMinute
@@ -172,6 +162,11 @@ def main():
     
     while 1:
         # infinite loop to continuously check weather values
+        # Listen for joystick key
+        sense.stick.direction_up = pushed_up 
+        sense.stick.direction_down = pushed_down
+        sense.stick.direction_left = pushed_left
+        sense.stick.direction_right = pushed_right
         # Measure every 5 seconds - for smoothing algorithm, POST every MEASUREMENT_INTERVAL
         current_second = datetime.datetime.now().second
         if (current_second == 0) or ((current_second % 5) == 0):
@@ -219,13 +214,13 @@ def main():
                     # SHAPE THE POST DATA
                     # ========================================================
                     weather_data = {
-                        "action": "updateraw",
                         "ID": wu_station_id,
                         "PASSWORD": wu_station_key,
                         "dateutc": now,
                         "tempf": str(temp_f),
                         "humidity": str(humidity),
                         "baromin": str(pressure),
+                        "action": "updateraw",
                     }
                     # ========================================================
                     # UPLOAD TO EC2   (UPLOAD === True?)
@@ -259,7 +254,7 @@ def main():
                             upload_url = WU_URL + "?" + urlencode(weather_data)
                             response = urllib2.urlopen(upload_url)
                             html = response.read()
-                            print ("URL" + upload_url)
+                            print ("URL: " + upload_url)
                             # on succesful upload - have a visual cue!
                             print("Server response:", html)
                             response.close()  # best practice to close the file
